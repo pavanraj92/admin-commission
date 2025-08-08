@@ -1,0 +1,22 @@
+{
+    "name": "admin/commissions",
+    "description": "Manage commissions for the admin panel.",
+    "type": "library",
+    "version": "1.0.0",  
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "admin\\commissions\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "admin\\commissions\\CommissionServiceProvider"
+        ]
+      }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+  }
+  
