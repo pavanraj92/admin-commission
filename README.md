@@ -17,7 +17,7 @@ This package provides commission management for Laravel admin panels. It support
 ## Usage
 1. Install the package via Composer:
     ```bash
-    composer require <vendor>/commissions
+    composer require admin/commissions:@dev
     ```
 2. Run migrations:
     ```bash
