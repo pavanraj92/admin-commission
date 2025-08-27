@@ -50,7 +50,13 @@ return new class extends Migration
             Schema::table('orders', function (Blueprint $table) {
                 // Drop foreign key first if applied
                 // $table->dropForeign(['commission_id']);
-                $table->dropColumn(['commission_id', 'commission_value']);
+                $table->dropColumn(['commission_id', 'commission_type', 'commission_value']);
+            });
+        }elseif($industry === 'education'){
+            Schema::table('course_purchases', function (Blueprint $table) {
+                // Drop foreign key first if applied
+                // $table->dropForeign(['commission_id']);
+                $table->dropColumn(['commission_id', 'commission_type', 'commission_value']);
             });
         }
     }
