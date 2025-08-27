@@ -12,12 +12,19 @@ class Commission extends Model
     use HasFactory, Sortable, SoftDeletes;
 
     protected $fillable = [
-        'type', 'category_id', 'commission_type', 'commission_value', 'status'
+        'type',
+        'commission_type',
+        'commission_value',
+        'status'
     ];
-    
+
 
     public $sortable = [
-      'type', 'category_id', 'commission_type', 'commission_value', 'status', 'created_at'
+        'type',
+        'commission_type',
+        'commission_value',
+        'status',
+        'created_at'
     ];
 
     public static function getPerPageLimit()
@@ -25,8 +32,13 @@ class Commission extends Model
         return config('commission.constants.per_page_limit', 10);
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo('admin\categories\Models\Category', 'category_id');
-    }   
+        return $this->belongsToMany(
+            'admin\categories\Models\Category',
+            'commission_category',
+            'commission_id',
+            'category_id'
+        );
+    }
 }
