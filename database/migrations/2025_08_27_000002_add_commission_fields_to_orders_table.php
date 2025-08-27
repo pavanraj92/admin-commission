@@ -21,7 +21,14 @@ return new class extends Migration
         }
         if ($industry === 'ecommerce') {
             Schema::table('orders', function (Blueprint $table) {
-                $table->foreignId('commission_id')->nullable()->constrained('commissions')->after('id')->onDelete('cascade');
+                $table->foreignId('commission_id')->nullable()->constrained('commissions')->after('id');
+                $table->enum('commission_type', ['percentage', 'fixed'])->nullable()->default('percentage')->after('commission_id');
+                $table->decimal('commission_value', 10, 2)->nullable()->after('commission_id');
+            });
+        }elseif($industry === 'education'){
+            Schema::table('course_purchases', function (Blueprint $table) {
+                $table->foreignId('commission_id')->nullable()->constrained('commissions')->after('id');
+                $table->enum('commission_type', ['percentage', 'fixed'])->nullable()->default('percentage')->after('commission_id');
                 $table->decimal('commission_value', 10, 2)->nullable()->after('commission_id');
             });
         }
