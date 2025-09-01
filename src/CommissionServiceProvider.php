@@ -71,7 +71,6 @@ class CommissionServiceProvider extends ServiceProvider
                 \admin\commissions\Console\Commands\PublishCommissionsModuleCommand::class,
                 \admin\commissions\Console\Commands\CheckModuleStatusCommand::class,
                 \admin\commissions\Console\Commands\DebugCommissionsCommand::class,
-                \admin\commissions\Console\Commands\TestViewResolutionCommand::class,
             ]);
         }
     }
@@ -84,14 +83,14 @@ class CommissionServiceProvider extends ServiceProvider
         // Define the files that need namespace transformation
         $filesWithNamespaces = [
             // Controllers
-            __DIR__ . '/../src/Controllers/FaqManagerController.php' => base_path('Modules/Commissions/app/Http/Controllers/Admin/FaqManagerController.php'),
+            __DIR__ . '/../src/Controllers/CommissionManagerController.php' => base_path('Modules/Commissions/app/Http/Controllers/Admin/CommissionManagerController.php'),
             
             // Models
-            __DIR__ . '/../src/Models/Faq.php' => base_path('Modules/Commissions/app/Models/Faq.php'),
+            __DIR__ . '/../src/Models/Commission.php' => base_path('Modules/Commissions/app/Models/Commission.php'),
             
             // Requests
-            __DIR__ . '/../src/Requests/FaqCreateRequest.php' => base_path('Modules/Commissions/app/Http/Requests/FaqCreateRequest.php'),
-            __DIR__ . '/../src/Requests/FaqUpdateRequest.php' => base_path('Modules/Commissions/app/Http/Requests/FaqUpdateRequest.php'),
+            __DIR__ . '/../src/Requests/CommissionCreateRequest.php' => base_path('Modules/Commissions/app/Http/Requests/CommissionCreateRequest.php'),
+            __DIR__ . '/../src/Requests/CommissionUpdateRequest.php' => base_path('Modules/Commissions/app/Http/Requests/CommissionUpdateRequest.php'),
             
             // Routes
             __DIR__ . '/routes/web.php' => base_path('Modules/Commissions/routes/web.php'),
@@ -132,7 +131,7 @@ class CommissionServiceProvider extends ServiceProvider
             'use admin\\commissions\\Requests\\' => 'use Modules\\Commissions\\app\\Http\\Requests\\',
             
             // Class references in routes
-            'admin\\commissions\\Controllers\\FaqManagerController' => 'Modules\\Commissions\\app\\Http\\Controllers\\Admin\\FaqManagerController',
+            'admin\\commissions\\Controllers\\CommissionManagerController' => 'Modules\\Commissions\\app\\Http\\Controllers\\Admin\\CommissionManagerController',
         ];
 
         // Apply transformations
@@ -161,20 +160,20 @@ class CommissionServiceProvider extends ServiceProvider
     {
         // Update use statements for models and requests
         $content = str_replace(
-            'use admin\\commissions\\Models\\Faq;',
-            'use Modules\\Commissions\\app\\Models\\Faq;',
+            'use admin\\commissions\\Models\\Commission;',
+            'use Modules\\Commissions\\app\\Models\\Commission;',
             $content
         );
         
         $content = str_replace(
-            'use admin\\commissions\\Requests\\FaqCreateRequest;',
-            'use Modules\\Commissions\\app\\Http\\Requests\\FaqCreateRequest;',
+            'use admin\\commissions\\Requests\\CommissionCreateRequest;',
+            'use Modules\\Commissions\\app\\Http\\Requests\\CommissionCreateRequest;',
             $content
         );
         
         $content = str_replace(
-            'use admin\\commissions\\Requests\\FaqUpdateRequest;',
-            'use Modules\\Commissions\\app\\Http\\Requests\\FaqUpdateRequest;',
+            'use admin\\commissions\\Requests\\CommissionUpdateRequest;',
+            'use Modules\\Commissions\\app\\Http\\Requests\\CommissionUpdateRequest;',
             $content
         );
 
@@ -206,8 +205,8 @@ class CommissionServiceProvider extends ServiceProvider
     {
         // Update controller references in routes
         $content = str_replace(
-            'admin\\commissions\\Controllers\\FaqManagerController',
-            'Modules\\Commissions\\app\\Http\\Controllers\\Admin\\FaqManagerController',
+            'admin\\commissions\\Controllers\\CommissionManagerController',
+            'Modules\\Commissions\\app\\Http\\Controllers\\Admin\\CommissionManagerController',
             $content
         );
 
