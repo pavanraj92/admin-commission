@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\File;
 
 class PublishCommissionsModuleCommand extends Command
 {
-    protected $signature = 'commissions:publish';
+    protected $signature = 'commissions:publish {--force : Force overwrite existing files}';
     protected $description = 'Publish the commissions module files to the main app';
 
      public function handle()
