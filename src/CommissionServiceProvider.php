@@ -180,6 +180,12 @@ class CommissionServiceProvider extends ServiceProvider
             $content
         );
 
+        $content = str_replace(
+            'use admin\\categories\\Models\\Category;',
+            'use Modules\\Categories\\app\\Models\\Category;',
+            $content
+        );
+
         return $content;
     }
 
