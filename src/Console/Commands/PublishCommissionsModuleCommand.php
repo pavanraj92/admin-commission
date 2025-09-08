@@ -97,6 +97,11 @@ class PublishCommissionsModuleCommand extends Command
             $content = str_replace('use admin\\commissions\\Models\\Commission;', 'use Modules\\Commissions\\app\\Models\\Commission;', $content);
             $content = str_replace('use admin\\commissions\\Requests\\CommissionCreateRequest;', 'use Modules\\Commissions\\app\\Http\\Requests\\CommissionCreateRequest;', $content);
             $content = str_replace('use admin\\commissions\\Requests\\CommissionUpdateRequest;', 'use Modules\\Commissions\\app\\Http\\Requests\\CommissionUpdateRequest;', $content);
+            $content = str_replace(
+                'use admin\\categories\\Models\\Category;',
+                'use Modules\\Categories\\app\\Models\\Category;',
+                $content
+            );
         }
 
         return $content;
