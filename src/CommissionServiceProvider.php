@@ -1,4 +1,5 @@
 <?php
+
 namespace admin\commissions;
 
 use Illuminate\Support\ServiceProvider;
@@ -18,8 +19,14 @@ class CommissionServiceProvider extends ServiceProvider
             __DIR__ . '/../resources/views'      // Package views as fallback
         ], 'commission');
 
-        $this->mergeConfigFrom(__DIR__.'/../config/commission.php', 'commission.constants');
-        
+        // Load published module config first (if it exists), then fallback to package config
+        if (file_exists(base_path('Modules/Commissions/config/commission.php'))) {
+            $this->mergeConfigFrom(base_path('Modules/Commissions/config/commission.php'), 'commission.constants');
+        } else {
+            // Fallback to package config if published config doesn't exist
+            $this->mergeConfigFrom(__DIR__ . '/../config/commission.php', 'commission.constants');
+        }
+
         // Also register module views with a specific namespace for explicit usage
         if (is_dir(base_path('Modules/Commissions/resources/views'))) {
             $this->loadViewsFrom(base_path('Modules/Commissions/resources/views'), 'commissions-module');
@@ -33,15 +40,15 @@ class CommissionServiceProvider extends ServiceProvider
         // Only publish automatically during package installation, not on every request
         // Use 'php artisan commissions:publish' command for manual publishing
         // $this->publishWithNamespaceTransformation();
-        
+
         // Standard publishing for non-PHP files
         $this->publishes([
+            __DIR__ . '/../config/' => base_path('Modules/Commissions/config/'),
             __DIR__ . '/../database/migrations' => base_path('Modules/Commissions/database/migrations'),
             __DIR__ . '/../resources/views' => base_path('Modules/Commissions/resources/views/'),
         ], 'commission');
-       
-        $this->registerAdminRoutes();
 
+        $this->registerAdminRoutes();
     }
 
     protected function registerAdminRoutes()
@@ -53,7 +60,7 @@ class CommissionServiceProvider extends ServiceProvider
         $admin = DB::table('admins')
             ->orderBy('created_at', 'asc')
             ->first();
-            
+
         $slug = $admin->website_slug ?? 'admin';
 
         $routeFile = base_path('Modules/Commissions/routes/web.php');
@@ -87,14 +94,14 @@ class CommissionServiceProvider extends ServiceProvider
         $filesWithNamespaces = [
             // Controllers
             __DIR__ . '/../src/Controllers/CommissionManagerController.php' => base_path('Modules/Commissions/app/Http/Controllers/Admin/CommissionManagerController.php'),
-            
+
             // Models
             __DIR__ . '/../src/Models/Commission.php' => base_path('Modules/Commissions/app/Models/Commission.php'),
-            
+
             // Requests
             __DIR__ . '/../src/Requests/CommissionCreateRequest.php' => base_path('Modules/Commissions/app/Http/Requests/CommissionCreateRequest.php'),
             __DIR__ . '/../src/Requests/CommissionUpdateRequest.php' => base_path('Modules/Commissions/app/Http/Requests/CommissionUpdateRequest.php'),
-            
+
             // Routes
             __DIR__ . '/routes/web.php' => base_path('Modules/Commissions/routes/web.php'),
         ];
@@ -103,13 +110,13 @@ class CommissionServiceProvider extends ServiceProvider
             if (File::exists($source)) {
                 // Create destination directory if it doesn't exist
                 File::ensureDirectoryExists(dirname($destination));
-                
+
                 // Read the source file
                 $content = File::get($source);
-                
+
                 // Transform namespaces based on file type
                 $content = $this->transformNamespaces($content, $source);
-                
+
                 // Write the transformed content to destination
                 File::put($destination, $content);
             }
@@ -127,12 +134,12 @@ class CommissionServiceProvider extends ServiceProvider
             'namespace admin\\commissions\\Controllers;' => 'namespace Modules\\Commissions\\app\\Http\\Controllers\\Admin;',
             'namespace admin\\commissions\\Models;' => 'namespace Modules\\Commissions\\app\\Models;',
             'namespace admin\\commissions\\Requests;' => 'namespace Modules\\Commissions\\app\\Http\\Requests;',
-            
+
             // Use statements transformations
             'use admin\\commissions\\Controllers\\' => 'use Modules\\Commissions\\app\\Http\\Controllers\\Admin\\',
             'use admin\\commissions\\Models\\' => 'use Modules\\Commissions\\app\\Models\\',
             'use admin\\commissions\\Requests\\' => 'use Modules\\Commissions\\app\\Http\\Requests\\',
-            
+
             // Class references in routes
             'admin\\commissions\\Controllers\\CommissionManagerController' => 'Modules\\Commissions\\app\\Http\\Controllers\\Admin\\CommissionManagerController',
         ];
@@ -167,13 +174,13 @@ class CommissionServiceProvider extends ServiceProvider
             'use Modules\\Commissions\\app\\Models\\Commission;',
             $content
         );
-        
+
         $content = str_replace(
             'use admin\\commissions\\Requests\\CommissionCreateRequest;',
             'use Modules\\Commissions\\app\\Http\\Requests\\CommissionCreateRequest;',
             $content
         );
-        
+
         $content = str_replace(
             'use admin\\commissions\\Requests\\CommissionUpdateRequest;',
             'use Modules\\Commissions\\app\\Http\\Requests\\CommissionUpdateRequest;',
