@@ -151,14 +151,17 @@ class CommissionManagerController extends Controller
 
     public function destroy(Commission $commission)
     {
-        // Detach all related categories
-        $commission->categories()->detach();
+        try {
+            // Detach all related categories
+            $commission->categories()->detach();
 
-        // Delete the commission
-        $commission->delete();
 
-        return redirect()->route('admin.commissions.index')
-            ->with('success', 'Commission deleted successfully.');
+            // Delete the commission
+            $commission->delete();
+            return response()->json(['success' => true, 'message' => 'Commission deleted successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to delete record.', 'error' => $e->getMessage()], 500);
+        }
     }
 
     public function updateStatus(Request $request)
